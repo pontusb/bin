@@ -1,0 +1,46 @@
+#!/bin/bash
+#### Description: Rescale jpg images to smaller(?) size (full hd)
+#### You have to edit TOP_FROM_DIR and TOP_TO_DIR before running the script
+#### Written by: Pontus Bjorklund - glenkeith9@gmail.com
+#### Year: 2013
+
+#Edit this
+TOP_FROM_DIR=/mnt/my_book_1/data/bilder
+TOP_TO_DIR=/mnt/my_book_1/data/mindre_bilder
+
+
+#LANG=sv_SV.iso88591
+#LANG=en_US.UTF-8
+#locale
+IMAGE_CNT=0
+DIR_CNT=0
+echo find $TOP_FROM_DIR -type d $DIR_FILTER
+DIRS=$(find $TOP_FROM_DIR -type d)
+echo "Directories found: $DIRS"
+for DIR in $DIRS
+do
+    #TO_DIR=$(echo $DIR | sed "s;${TOP_FROM_DIR};${TOP_TO_DIR};")
+    TO_DIR=$TOP_TO_DIR
+    DIR_CNT=$(($DIR_CNT+1))
+    echo "Processing dir: $DIR (to dir: $TO_DIR)"
+    IMAGES=$(find $DIR -type f -name "*.[jJ][pP][gG]" | grep -v remove_q | grep -v blandat_pe | grep -v blandat_pe | grep -v "[Bb]est_of_")
+    echo -e "Images found:\n$IMAGES"    
+    for IMAGE in $IMAGES
+    do
+	TO_IMAGE=$(echo $TO_DIR/$(basename $IMAGE) | sed 's;\.[jJ][pP][gG];;')_1920.jpg
+	echo $TO_IMAGE
+	IMAGE_CNT=$(($IMAGE_CNT+1))
+	if [ ! -e $TO_IMAGE ]
+	then
+	    echo ">>> Processing image: $IMAGE --> $TO_IMAGE <<<"
+	    ORIG_SIZE=$(exiftool -imagesize $IMAGE)
+	    convert $IMAGE -resize 1920x1920\> $TO_IMAGE
+	    NEW_SIZE=$(exiftool -imagesize $TO_IMAGE)
+	    exiftool '-datetimeoriginal>filemodifydate' $TO_IMAGE
+	    echo "  Resize ($ORIG_SIZE -> $NEW_SIZE) and date fix"
+	fi
+    done
+done
+
+echo "Dir count: $DIR_CNT"
+echo "Image count: $IMAGE_CNT"

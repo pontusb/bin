@@ -1,0 +1,14 @@
+#!/bin/bash
+#### Description: Clean "tmp-files"
+#### Written by: Pontus Bjorklund - glenkeith9@gmail.com
+#### Year: 2015
+
+FILES=$(ls -1 *~ 2> /dev/null)
+[ -z "$FILES" ] && exit
+echo "FILES="$FILES""
+echo -n Remove FILES [y/n]?
+read READ
+if [ X"$READ" = Xy ]
+then
+   rm -f $FILES && echo $FILES removed
+fi

@@ -1,0 +1,21 @@
+#!/bin/bash
+#### Description: Remove space from filenames and directories 
+#### Useful for converting Windows style catalogs to be used in Linux
+#### Written by: Pontus Bjorklund - glenkeith9@gmail.com
+
+
+
+echo "----------Directories-------------------------"
+find -type d -name "* *" -print0 | while read -d $'\0' DIR
+do
+    NEW_DIR=$(echo $DIR | tr ' ' '_')
+    echo mv -vn "${DIR}" $NEW_DIR
+    [ $1 ] && [ "$1" = "EXECUTE" ] && mv -vn "${DIR}" $NEW_DIR
+done
+echo "----------Files-------------------------"
+find -type f -name "* *" -print0 | while read -d $'\0' FILE
+do
+    NEW_FILE=$(echo $FILE | tr ' ' '_')
+    echo mv -vn "$FILE" $NEW_FILE
+    [ $1 ] && [ "$1" = "EXECUTE" ] && mv -vn "$FILE" $NEW_FILE
+done

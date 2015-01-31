@@ -1,0 +1,40 @@
+#!/bin/bash
+#### Description: Fullscreen "slideshow" of specified webpages
+#### Requires Midori Web browser
+#### Written by: Pontus Bjorklund - glenkeith9@gmail.com
+#### Year: 2015
+
+PAGES="\
+http://www.svt.se/svttext/web/pages/100.html \
+http://www.svt.se/svttext/web/pages/202.html \
+http://www.svt.se/svttext/web/pages/300.html \
+http://www.smhi.se/vadret/vadret-i-sverige/land/fiveDaysForecast.do?geonameid=2688177&redirect=false \
+http://www.aftonbladet.se \
+http://www.di.se \
+"
+
+#PAGE=http://www.svt.se/svttext/web/pages/100.html
+
+function view ()  {
+         OLDPID=$PID
+	 midori -e Fullscreen -a $PAGE & PID=$!
+	 sleep 1s
+	 kill $OLDPID
+}
+
+
+while true
+do
+
+    xmessage -center "Starting radiator..." & PID=$!
+    sleep 5s    
+
+    for PAGE in $PAGES
+    do
+	view
+	sleep 20s
+    done
+    
+done
+
+kill $PID

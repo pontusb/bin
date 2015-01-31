@@ -1,0 +1,4 @@
+#!/bin/bash
+#### Description: Returns your wan ip adress (internet ip adress)
+#### Written by: ?
+wget http://checkip.dyndns.com -O - -o /dev/null | awk '{print $6}'|cut -d"<" -f1

@@ -1,0 +1,6 @@
+#!/bin/bash
+#### Description: Return my ip adress
+#### Written by: Pontus Bjorklund - glenkeith9@gmail.com
+#### Year: 2014
+
+ip route get 8.8.8.8 | grep src | sed 's/.*src\s*//'
