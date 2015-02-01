@@ -6,5 +6,5 @@ cd ~ && git clone git@github.com:pontusb/pb_pub.git
 ## pb_pub/bin
 Add to PATH
 ```bash
-export PATH=pb_pub/bin:$PATH
+export PATH=$HOME/pb_pub/bin:$PATH
 ```
